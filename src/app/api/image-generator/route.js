@@ -60,8 +60,8 @@ export async function POST() {
         const transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-                user: 'your-email@gmail.com',
-                pass: 'your-email-password',
+                user: 'generator@gmail.com',
+                pass: 'Generate',
             },
         });
 
