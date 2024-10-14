@@ -1,0 +1,7 @@
+model Caption {
+  id       Int     @id @default(autoincrement())
+  imageId  String
+  caption  String
+  status   String  @default("pending")
+  imageUrl String?
+}
