@@ -18,19 +18,11 @@ export const processRequests = async () => {
                 continue;
             }
 
-            // Save the generated image to S3
-            const imageUrl = await saveImageToS3(generatedImage, `generated-${request.id}.png`);
-            if (!imageUrl) {
-                console.error(`Failed to save image for request ID: ${request.id}`);
-                await updateRequestStatus(request.id, 'failed');
-                continue;
-            }
-
             // Update the request in the database
-            await updateRequestStatus(request.id, 'done', imageUrl);
+            await updateRequestStatus(request.id, 'done', generatedImage);
 
             // Send the image URL to the user's email
-            await sendEmail(request.email, imageUrl);
+            await sendEmail(request.email, generatedImage);
 
             console.log(`Request ID ${request.id} processed successfully`);
         }
