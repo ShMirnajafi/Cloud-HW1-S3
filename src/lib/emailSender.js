@@ -1,28 +1,25 @@
-import nodemailer from 'nodemailer';
+import { MailerSend, EmailParams, Recipient, Sender } from "mailersend";
 
 export const sendEmail = async (recipientEmail, imageUrl) => {
-    const transporter = nodemailer.createTransport({
-        host: "smtp.mailersend.net",
-        port: 465,
-        secure: false,
-        auth: {
-            user: "MS_98y7hL@trial-jpzkmgq2ry2g059v.mlsender.net",
-            pass: "AiVrsRKpSTLmJWDc",
-        },
+    const mailersend = new MailerSend({
+        apiKey: 'mlsn.941e2068854298db0ec2f0fe7a29d848962f451a395b5dd54fa288d46db42d05',
     });
 
-    const mailOptions = {
-        from: '"Image Generator" <MS_98y7hL@trial-jpzkmgq2ry2g059v.mlsender.net>',
-        to: recipientEmail,
-        subject: "Here is your generated image!",
-        text: `Your image is ready. Here is the link to your image: ${imageUrl}`,
-        html: `<p>Your image is ready. You can view or download it using the following link:</p>
-               <a href="${imageUrl}">${imageUrl}</a>`,
-    };
+    const recipients = [
+        new Recipient(recipientEmail, "User"),
+    ];
+
+    const emailParams = new EmailParams()
+        .setFrom(new Sender("info@trial-jpzkmgq2ry2g059v.mlsender.net", "Image Generator"))
+        .setTo(recipients)
+        .setSubject("Here is your generated image!")
+        .setHtml(`<p>Your image is ready. You can view or download it using the following link:</p>
+              <a href="${imageUrl}">${imageUrl}</a>`)
+        .setText(`Your image is ready. Here is the link to your image: ${imageUrl}`);
 
     try {
-        let info = await transporter.sendMail(mailOptions);
-        console.log('Email sent: %s', info.messageId);
+        await mailersend.email.send(emailParams);
+        console.log('Email sent successfully');
     } catch (error) {
         console.error('Failed to send email:', error);
     }
