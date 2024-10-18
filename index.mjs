@@ -1,4 +1,4 @@
-import { processRequests } from '@/lib/serviceThree.js';
+import { processRequests } from './src/lib/serviceThree.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -10,4 +10,4 @@ setInterval(async () => {
     } catch (error) {
         console.error("Error processing requests:", error);
     }
-}, 10000);
+}, 60000);  // Every 60 seconds
