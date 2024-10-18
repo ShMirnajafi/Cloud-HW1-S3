@@ -10,4 +10,4 @@ setInterval(async () => {
     } catch (error) {
         console.error("Error processing requests:", error);
     }
-}, 60000);  // Every 60 seconds
+}, 10000);
