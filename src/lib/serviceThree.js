@@ -10,7 +10,6 @@ export const processRequests = async () => {
         for (const request of requests) {
             const caption = request.image_caption;
 
-            // Generate image based on the caption
             const generatedImage = await imageGenerator(caption);
             if (!generatedImage) {
                 console.error(`Failed to generate image for request ID: ${request.id}`);
@@ -18,10 +17,8 @@ export const processRequests = async () => {
                 continue;
             }
 
-            // Update the request in the database
             await updateRequestStatus(request.id, 'done', generatedImage);
 
-            // Send the image URL to the user's email
             await sendEmail(request.email, generatedImage);
 
             console.log(`Request ID ${request.id} processed successfully`);
@@ -44,16 +41,13 @@ export const imageGenerator = async (caption) => {
             }),
         });
 
-        // Check if the request was successful
         if (!response.ok) {
             throw new Error(`Failed to generate image: ${response.statusText}`);
         }
 
-        // Fetch the image data as binary
         const arrayBuffer = await response.arrayBuffer();
         const buffer = Buffer.from(arrayBuffer);
 
-        // Save the image to S3
         const imageUrl = await saveImageToS3(buffer, 'generated-image.png');
         return imageUrl;
 
